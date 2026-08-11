@@ -64,7 +64,6 @@ public class Topic{
     @Column(
         name="slug",
         nullable = false,
-        unique= true,
         length= 150
     )
     private String slug;

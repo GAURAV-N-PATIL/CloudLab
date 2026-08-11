@@ -99,12 +99,7 @@ CREATE TABLE topics(
         FOREIGN KEY (prerequisite_topic_id)
         REFERENCES topics (id)
         ON DELETE SET NULL
-        ON UPDATE CASCADE,
-    CONSTRAINT chk_topics_not_self_prerequisite
-        CHECK(
-            prerequisite_topic_id IS NULL
-            OR prerequisite_topic_id <> id
-        )
+        ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 -- 5.Topics  Resources
@@ -229,7 +224,7 @@ CREATE TABLE project_resources(
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
---9.Project topics required
+-- 9.Project topics required
 CREATE TABLE project_required_topics(
     project_id      BIGINT UNSIGNED NOT NULL,
     topic_id        BIGINT UNSIGNED NOT NULL,
@@ -349,4 +344,3 @@ CREATE TABLE certificates (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
-

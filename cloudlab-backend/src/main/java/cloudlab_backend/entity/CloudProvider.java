@@ -2,59 +2,77 @@ package cloudlab_backend.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 @Entity
-@Table(
-    name ="cloud_providers",
-    uniqueConstraints ={
-        @UniqueConstraint(name="uk_cloud_providers_name",columnNames= "name"),
-        @UniqueConstraint(name="uk_cloud_providers_slug", columnNames ="slug")
+@Table(name="cloud_providers",uniqueConstraints={
+        @UniqueConstraint(name ="uk_cloud_providers_name",columnNames= "name"),
+        @UniqueConstraint(name="uk_cloud_providers_slug",columnNames ="slug")
     }
 )
 public class CloudProvider{
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(
+        name ="id",
+        nullable = false,
+        updatable= false
+    )
     private Long id;
-    @Column(nullable=false,length =100)
+    @Column(
+        name="name",
+        nullable = false,
+        length =100
+    )
     private String name;
-    @Column(nullable =false, length = 100)
+    @Column(
+        name="slug",
+        nullable= false,
+        length =100
+    )
     private String slug;
-    @Column(columnDefinition= "TEXT")
+    @Column(
+        name = "description",
+        columnDefinition = "TEXT"
+    )
     private String description;
-    @Column(name = "is_active",nullable =false)
-    private Boolean active = true;
-    @Column(name= "created_at",nullable= false, updatable = false)
+    @Column(
+        name ="is_active",
+        nullable = false
+    )
+    private Boolean active=true;
+    @Column(
+        name ="created_at",
+        nullable = false,
+        insertable = false,
+        updatable= false
+    )
     private LocalDateTime createdAt;
     public CloudProvider(){
     }
-    @PrePersist
-    protected void onCreate(){
-        createdAt =LocalDateTime.now();
-    }
-    public Long getId(){
+    public Long getId() {
         return id;
     }
     public String getName(){
         return name;
     }
     public void setName(String name){
-        this.name =name;
+        this.name=name;
     }
     public String getSlug(){
         return slug;
     }
-    public void setSlug(String slug){
-        this.slug =slug;
+    public void setSlug(String slug) {
+        this.slug=slug;
     }
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
-    public void setDescription(String description){
-        this.description= description;
+    public void setDescription(String description) {
+        this.description = description;
     }
-    public Boolean getActive() {
+    public Boolean getActive(){
         return active;
     }
     public void setActive(Boolean active) {
-        this.active=active;
+        this.active =active;
     }
     public LocalDateTime getCreatedAt() {
         return createdAt;

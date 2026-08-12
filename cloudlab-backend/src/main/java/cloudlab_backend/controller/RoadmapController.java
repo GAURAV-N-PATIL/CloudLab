@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/api/roadmap")
 public class RoadmapController{
@@ -43,4 +45,19 @@ public class RoadmapController{
                 roadmapService.getTopicBySlug(slug, user)
         );
     }
+    @PostMapping("/{slug}/complete")
+public ResponseEntity<Void> completeTopic(
+        @PathVariable String slug,
+        Authentication authentication
+) {
+    String email = authentication.getName();
+
+    User user = userRepository
+            .findByEmail(email)
+            .orElseThrow();
+
+    roadmapService.completeTopic(slug, user);
+
+    return ResponseEntity.noContent().build();
+}
 }

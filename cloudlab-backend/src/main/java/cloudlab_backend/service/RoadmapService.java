@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDateTime;
 @Service
 public class RoadmapService{
     private final TopicRepository topicRepository;
@@ -28,8 +29,8 @@ public class RoadmapService{
         Long cloudProviderId = user.getSelectedCloud()!=null ? user.getSelectedCloud().getId()
                 : null;
         List<Topic> topics;
-        if(cloudProviderId == null) {
-            topics = topicRepository.findAll();
+        if (cloudProviderId == null) {
+        	topics = topicRepository.findByCloudProviderIsNull(); 
         } else {
             topics = topicRepository
                     .findByCloudProviderIsNullOrCloudProvider_Id(
@@ -169,6 +170,74 @@ public class RoadmapService{
         return progressMap.get(prerequisite.getId())
                 == UserTopicProgress.Status.COMPLETED;
     }
+    public void completeTopic(
+        String slug,
+        User user
+	) {
+    	Topic topic = topicRepository
+            .findBySlug(slug)
+            .orElseThrow();
+
+    	Long cloudProviderId = user.getSelectedCloud() != null
+            ? user.getSelectedCloud().getId()
+            : null;
+
+    	if (topic.getCloudProvider() != null
+            && !topic.getCloudProvider().getId().equals(cloudProviderId)) {
+
+        throw new IllegalArgumentException(
+                "Topic is not available for the selected cloud provider"
+        );
+    }
+
+    List<UserTopicProgress> progressList =
+            progressRepository.findByUser_Id(user.getId());
+
+    Map<Long, UserTopicProgress.Status> progressMap =
+            new HashMap<>();
+
+    for (UserTopicProgress progress : progressList) {
+        progressMap.put(
+                progress.getTopic().getId(),
+                progress.getStatus()
+        );
+    }
+
+    if (!isUnlocked(topic, progressMap)) {
+        throw new IllegalStateException(
+                "Topic is locked"
+        );
+    }
+
+    UserTopicProgress progress =
+            progressRepository
+                    .findByUser_IdAndTopic_Id(
+                            user.getId(),
+                            topic.getId()
+                    )
+                    .orElseGet(() -> {
+                        UserTopicProgress newProgress =
+                                new UserTopicProgress();
+
+                        newProgress.setUser(user);
+                        newProgress.setTopic(topic);
+                        newProgress.setStartedAt(
+                                LocalDateTime.now()
+                        );
+
+                        return newProgress;
+                    });
+
+    progress.setStatus(
+            UserTopicProgress.Status.COMPLETED
+    );
+
+    progress.setCompletedAt(
+            LocalDateTime.now()
+    );
+
+    progressRepository.save(progress);
+}
 
     public record RoadmapTopic(
             Long id,

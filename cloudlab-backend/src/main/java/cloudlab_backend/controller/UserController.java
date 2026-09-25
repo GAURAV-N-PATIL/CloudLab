@@ -1,4 +1,5 @@
 package cloudlab_backend.controller;
+import cloudlab_backend.dto.UserResponse;
 import cloudlab_backend.dto.SelectCloudRequest;
 import cloudlab_backend.entity.CloudProvider;
 import cloudlab_backend.entity.User;
@@ -20,6 +21,14 @@ public class UserController{
     ){
         this.userRepository=userRepository;
         this.cloudProviderRepository=cloudProviderRepository;
+    }
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication){
+        String email = authentication.getName();
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow();
+        return ResponseEntity.ok(UserResponse.from(user));
     }
     @PostMapping("/select-cloud")
     public ResponseEntity<Void> selectCloud(@Valid @RequestBody SelectCloudRequest request, Authentication authentication){

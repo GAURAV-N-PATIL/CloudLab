@@ -1,0 +1,54 @@
+.shell { min-height: 100vh; display: flex; flex-direction: column; }
+
+.skip-link {
+  position: absolute; left: var(--s-4); top: -4rem;
+  background: var(--ink); color: #fff; padding: var(--s-2) var(--s-4);
+  border-radius: var(--radius-sm); z-index: 50;
+}
+.skip-link:focus { top: var(--s-3); color: #fff; }
+
+.nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 20;
+}
+.nav__inner {
+  max-width: var(--page-width); margin: 0 auto;
+  padding: 0 var(--s-5); min-height: 64px;
+  display: flex; align-items: center; gap: var(--s-6);
+}
+.nav__brand {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
+  color: var(--ink); text-decoration: none; letter-spacing: -0.02em;
+  display: inline-flex; align-items: center; gap: var(--s-2);
+}
+.nav__brand:hover { color: var(--ink); }
+.nav__links { display: flex; gap: var(--s-1); flex: 1; flex-wrap: wrap; }
+.nav__link {
+  color: var(--ink-soft); text-decoration: none; font-weight: 600;
+  font-size: var(--text-sm); padding: var(--s-2) var(--s-3);
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.nav__link:hover { background: var(--paper); color: var(--ink); }
+.nav__link.is-active { color: var(--signal-strong); background: var(--signal-tint); }
+.nav__actions { display: flex; align-items: center; gap: var(--s-3); }
+.nav__user { font-size: var(--text-sm); color: var(--ink-soft); }
+
+.main { flex: 1; width: 100%; max-width: var(--page-width); margin: 0 auto; padding: var(--s-7) var(--s-5) var(--s-8); }
+.main--narrow { max-width: 460px; }
+
+.footer {
+  border-top: 1px solid var(--line); background: var(--surface);
+  color: var(--ink-faint); font-size: var(--text-xs);
+}
+.footer__inner { max-width: var(--page-width); margin: 0 auto; padding: var(--s-4) var(--s-5); }
+
+.page-head { margin-bottom: var(--s-6); }
+.page-head p { color: var(--ink-soft); margin-bottom: 0; }
+
+@media (max-width: 720px) {
+  .nav__inner { flex-wrap: wrap; padding: var(--s-3) var(--s-4); gap: var(--s-3); }
+  .nav__links { order: 3; flex-basis: 100%; }
+  .main { padding: var(--s-6) var(--s-4) var(--s-7); }
+}

@@ -103,6 +103,8 @@ The frontend has two modes, controlled by `VITE_USE_MOCK` in `.env.local`:
 - [ ] Certificate PDF generation
 - [ ] Deployment
 
+## Frontend-improvement branch contents
+
 ## License
 
 See [LICENSE](LICENSE).

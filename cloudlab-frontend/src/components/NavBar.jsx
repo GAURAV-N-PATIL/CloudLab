@@ -17,7 +17,7 @@ export default function NavBar() {
     <header className="nav">
       <div className="nav__inner">
         <Link to="/home" className="nav__brand">
-          <Cloud size={22} aria-hidden="true" />
+          <span className="nav__brand-mark"><Cloud size={17} aria-hidden="true" /></span>
           CloudLab
         </Link>
         <nav className="nav__links" aria-label="Main">

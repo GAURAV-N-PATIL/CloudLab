@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Check, ExternalLink, FileText, PartyPopper } from 'lucide-react'
+import { ArrowLeft, Check, ExternalLink, FileText, LockOpen } from 'lucide-react'
+import { animate, stagger } from 'animejs'
+import { prefersReducedMotion } from '../lib/motion'
 import { api } from '../api'
 import { useAsync } from '../lib/useAsync'
 import { titleCase } from '../lib/format'
@@ -89,20 +91,7 @@ function TopicPage({ slug }) {
         {actionError && <div className="notice notice--error" role="alert"><p>{actionError}</p></div>}
       </section>
 
-      {topic.status === 'COMPLETED' && newlyUnlocked.length > 0 && (
-        <section className="unlock-panel" aria-label="Newly unlocked">
-          <PartyPopper size={20} aria-hidden="true" />
-          <div>
-            <strong>Unlocked:</strong>{' '}
-            {newlyUnlocked.map((t, i) => (
-              <span key={t.slug}>
-                {i > 0 && ', '}
-                <Link to={`/roadmap/${t.slug}`}>{t.name}</Link>
-              </span>
-            ))}
-          </div>
-        </section>
-      )}
+      {topic.status === 'COMPLETED' && newlyUnlocked.length > 0 && <UnlockPanel topics={newlyUnlocked} />}
 
       {topic.status === 'COMPLETED' && allDone && !newlyUnlocked.length && (
         <div className="notice"><p>You have finished everything available right now. <Link to="/roadmap">Back to the roadmap</Link> to continue.</p></div>
@@ -148,5 +137,34 @@ function Resource({ resource }) {
         </span>
       </a>
     </li>
+  )
+}
+
+// Anime.js: when completing a topic opens the next one, the panel pops in and the new links follow.
+function UnlockPanel({ topics }) {
+  const ref = useRef(null)
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el || prefersReducedMotion()) return
+    const a = animate(el, { opacity: [0, 1], translateY: [14, 0], scale: [0.96, 1], duration: 650, ease: 'outBack' })
+    const b = animate(el.querySelectorAll('.unlock-panel__icon'), { rotate: [-25, 0], scale: [0.4, 1], duration: 700, delay: 150, ease: 'outElastic(1, .6)' })
+    const c = animate(el.querySelectorAll('.unlock-panel__link'), { opacity: [0, 1], translateX: [-10, 0], delay: stagger(90, { start: 250 }), duration: 500, ease: 'outExpo' })
+    return () => { a.revert(); b.revert(); c.revert() }
+  }, [])
+
+  return (
+    <section className="unlock-panel" aria-label="Newly unlocked" ref={ref}>
+      <LockOpen className="unlock-panel__icon" size={22} aria-hidden="true" />
+      <div>
+        <strong>Unlocked:</strong>{' '}
+        {topics.map((t, i) => (
+          <span key={t.slug} className="unlock-panel__link">
+            {i > 0 && ', '}
+            <Link to={`/roadmap/${t.slug}`}>{t.name}</Link>
+          </span>
+        ))}
+      </div>
+    </section>
   )
 }

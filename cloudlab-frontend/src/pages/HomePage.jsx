@@ -1,16 +1,20 @@
+import { useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { animate, createScope, onScroll, stagger } from 'animejs'
 import { useAuth } from '../context/AuthContext'
 import { api } from '../api'
 import { useAsync } from '../lib/useAsync'
 import { findNextTopic, summarizeProgress } from '../lib/format'
+import { gsap, prefersReducedMotion } from '../lib/motion'
 import ProgressBar from '../components/ProgressBar'
+import SplitWords from '../components/SplitWords'
 import { ErrorState, PageSkeleton } from '../components/States'
 
 const PREVIEW_PATH = [
-  { name: 'Linux', note: 'The command line you will work in every day' },
+  { name: 'Linux', note: 'The command line you will use every day' },
   { name: 'Networking', note: 'How machines find and talk to each other' },
   { name: 'Git & GitHub', note: 'Version control and collaboration' },
-  { name: 'Docker', note: 'Package an app so it runs the same anywhere' },
+  { name: 'Docker', note: 'Package an app so it runs anywhere' },
   { name: 'CI/CD', note: 'Test and ship on every push' },
   { name: 'Kubernetes', note: 'Run containers at scale' },
   { name: 'Terraform', note: 'Describe infrastructure as code' },
@@ -29,11 +33,56 @@ export default function HomePage() {
 }
 
 function Landing() {
+  const heroRef = useRef(null)
+  const stepsRef = useRef(null)
+
+  // GSAP: the one orchestrated moment. Headline words rise, then the path card draws itself.
+  useLayoutEffect(() => {
+    if (prefersReducedMotion()) return
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+      tl.from('.split-word__inner', { yPercent: 115, duration: 0.95, stagger: 0.07, ease: 'power4.out' })
+        .from('.hero__lead, .hero__actions, .hero__fine', { y: 18, opacity: 0, duration: 0.7, stagger: 0.1 }, '-=0.45')
+        .from('.hero-card', { opacity: 0, y: 28, scale: 0.97, duration: 0.9 }, 0.25)
+        .from('.pp__spine', { scaleY: 0, transformOrigin: 'top center', duration: 1.3, ease: 'power2.inOut' }, 0.6)
+        .from('.pp__item', { opacity: 0, x: -14, duration: 0.5, stagger: 0.13 }, 0.7)
+        .from('.pp__dot', { scale: 0, duration: 0.45, stagger: 0.13, ease: 'back.out(2.4)' }, 0.7)
+    }, heroRef)
+    return () => ctx.revert()
+  }, [])
+
+  // Anime.js: steps reveal as they scroll in; the rail fills in step with the scroll.
+  useLayoutEffect(() => {
+    const root = stepsRef.current
+    if (!root || prefersReducedMotion()) return
+    const scope = createScope({ root }).add(() => {
+      animate('.step', {
+        opacity: [0, 1],
+        translateY: [32, 0],
+        duration: 800,
+        delay: stagger(140),
+        ease: 'outExpo',
+        autoplay: onScroll({ target: root, enter: '85% top', repeat: false }),
+      })
+      animate('.steps__rail-fill', {
+        scaleX: [0, 1],
+        ease: 'linear',
+        autoplay: onScroll({ target: root, enter: '75% top', leave: '60% bottom', sync: true }),
+      })
+    })
+    return () => scope.revert()
+  }, [])
+
   return (
     <div className="landing">
-      <section className="hero">
+      <section className="hero" ref={heroRef}>
+        <div className="hero__grid" aria-hidden="true" />
+        <div className="hero__glow" aria-hidden="true" />
+
         <div className="hero__copy">
-          <h1 className="hero__title">Learn cloud and DevOps in the order you will use it.</h1>
+          <h1 className="hero__title">
+            <SplitWords text="Learn cloud and DevOps in the order you will use it." />
+          </h1>
           <p className="hero__lead">
             One fixed path from Linux to Kubernetes and Terraform. Finish a topic to open the next,
             then build projects with what you learned.
@@ -45,31 +94,42 @@ function Landing() {
           <p className="hero__fine">Beginner topics and two projects are free.</p>
         </div>
 
-        {/* The one orchestrated motion on this page: the path fills in once on load. */}
-        <ol className="preview-path" aria-label="The CloudLab learning path">
-          {PREVIEW_PATH.map((item, i) => (
-            <li key={item.name} className="preview-path__item" style={{ '--i': i }}>
-              <span className="preview-path__dot" aria-hidden="true" />
-              <span>
-                <span className="preview-path__name">{item.name}</span>
-                <span className="preview-path__note">{item.note}</span>
-              </span>
-            </li>
-          ))}
-        </ol>
+        <div className="hero-card">
+          <div className="hero-card__head">The path</div>
+          <ol className="preview-path" aria-label="The CloudLab learning path">
+            <span className="pp__spine" aria-hidden="true" />
+            {PREVIEW_PATH.map((item) => (
+              <li key={item.name} className="pp__item">
+                <span className="pp__dot" aria-hidden="true" />
+                <span>
+                  <span className="pp__name">{item.name}</span>
+                  <span className="pp__note">{item.note}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
-      <section className="steps" aria-labelledby="how-title">
-        <h2 id="how-title">How it works</h2>
+      <section className="steps" ref={stepsRef} aria-labelledby="how-title">
+        <h2 id="how-title" className="section-title">How it works</h2>
+        <div className="steps__rail" aria-hidden="true"><div className="steps__rail-fill" /></div>
         <ol className="steps__list">
           {STEPS.map((s, i) => (
-            <li key={s.title} className="steps__item">
-              <span className="steps__num" aria-hidden="true">{i + 1}</span>
+            <li key={s.title} className="step">
+              <span className="step__num" aria-hidden="true">{i + 1}</span>
               <h3>{s.title}</h3>
               <p>{s.body}</p>
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="cta-band">
+        <div className="cta-band__glow" aria-hidden="true" />
+        <h2>Start with Linux today.</h2>
+        <p>Free account, no card. The first topic is already open.</p>
+        <Link to="/signup" className="btn btn--primary btn--lg">Create a free account</Link>
       </section>
     </div>
   )
@@ -128,16 +188,11 @@ function Dashboard({ user }) {
         <section className="card" aria-labelledby="dash-projects">
           <h2 id="dash-projects">Projects</h2>
           {readyProjects.length > 0 ? (
-            <>
-              <p>{readyProjects.length} {readyProjects.length === 1 ? 'project is' : 'projects are'} ready to build.</p>
-              <Link to="/projects" className="btn btn--secondary">View projects</Link>
-            </>
+            <p>{readyProjects.length} {readyProjects.length === 1 ? 'project is' : 'projects are'} ready to build.</p>
           ) : (
-            <>
-              <p>Projects open as you finish the topics they need.</p>
-              <Link to="/projects" className="btn btn--secondary">View projects</Link>
-            </>
+            <p>Projects open as you finish the topics they need.</p>
           )}
+          <Link to="/projects" className="btn btn--secondary">View projects</Link>
         </section>
       </div>
     </div>

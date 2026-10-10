@@ -21,7 +21,7 @@
 .hero__fine { font-size: var(--text-sm); color: var(--text-faint); margin: 0; }
 
 .hero-card {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)), var(--surface);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-xl);
   padding: var(--s-5) var(--s-5) var(--s-4);
@@ -67,11 +67,13 @@
   position: relative; overflow: hidden; text-align: center;
   padding: var(--s-8) var(--s-5);
   border: 1px solid var(--line-strong); border-radius: var(--radius-xl);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)), var(--surface);
 }
 .cta-band > * { position: relative; }
 .cta-band h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
 .cta-band p { margin: 0 auto var(--s-5); color: var(--text-soft); }
+.cta-band__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); }
+.blank-page { min-height: 55vh; }
 .cta-band__glow { position: absolute !important; inset: auto 0 -60% 0; height: 100%; background: radial-gradient(ellipse at 50% 100%, rgba(59, 111, 232, 0.4), transparent 65%); pointer-events: none; }
 
 /* ======================= Dashboard / profile ======================= */
@@ -121,7 +123,7 @@ a.tl-card:hover { border-color: rgba(141, 176, 255, 0.55); background: var(--sur
 .tl-card__next { font-size: var(--text-xs); font-weight: 700; color: var(--signal-text); }
 .tl-card__title { font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); }
 .tl-card__desc { font-size: var(--text-sm); color: var(--text-soft); }
-.tl-item--locked .tl-card { background: transparent; border-style: dashed; box-shadow: none; }
+.tl-item--locked .tl-card { background: var(--bg-raised); border-style: dashed; box-shadow: none; }
 .tl-item--locked .tl-card__title { color: var(--text-faint); }
 .tl-item--next .tl-card { border-color: rgba(141, 176, 255, 0.5); box-shadow: 0 0 0 1px rgba(141, 176, 255, 0.18), 0 14px 36px -14px var(--signal-glow); }
 /* The one persistent motion on this page: a slow ring on the topic to do next. */
@@ -129,7 +131,7 @@ a.tl-card:hover { border-color: rgba(141, 176, 255, 0.55); background: var(--sur
 @keyframes ring { 0% { box-shadow: 0 0 0 6px var(--bg), 0 0 0 6px rgba(141,176,255,0.55); } 70%, 100% { box-shadow: 0 0 0 6px var(--bg), 0 0 0 18px rgba(141,176,255,0); } }
 
 /* ======================= Cloud choice ======================= */
-.cloud-choice { margin-bottom: var(--s-7); border-color: rgba(141, 176, 255, 0.45); background: linear-gradient(160deg, rgba(59,111,232,0.14), var(--surface)); }
+.cloud-choice { margin-bottom: var(--s-7); border-color: rgba(141, 176, 255, 0.45); background: linear-gradient(160deg, rgba(59,111,232,0.14), var(--surface)), var(--surface); }
 .cloud-choice__options { border: 0; margin: var(--s-4) 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s-3); }
 .cloud-option {
   position: relative; display: grid; gap: var(--s-1); padding: var(--s-4);
@@ -196,10 +198,10 @@ a.tl-card:hover { border-color: rgba(141, 176, 255, 0.55); background: var(--sur
 
 .billing { display: inline-flex; align-items: center; gap: var(--s-3); font-weight: 600; font-size: var(--text-sm); color: var(--text-faint); }
 .billing .is-on { color: var(--text); }
-.billing em { font-style: normal; font-size: var(--text-xs); color: var(--done); background: var(--done-tint); padding: 0.1rem 0.5rem; border-radius: 999px; margin-left: var(--s-1); }
+.billing em { font-style: normal; font-size: var(--text-xs); color: var(--done); background: linear-gradient(var(--done-tint), var(--done-tint)), var(--bg-raised); padding: 0.1rem 0.5rem; border-radius: 999px; margin-left: var(--s-1); }
 .switch {
   position: relative; width: 48px; height: 28px; border-radius: 999px; padding: 0; cursor: pointer;
-  background: var(--glass); border: 1px solid var(--line-strong);
+  background: linear-gradient(var(--glass), var(--glass)), var(--bg-raised); border: 1px solid var(--line-strong);
   transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 .switch[aria-checked='true'] { background: var(--signal); border-color: transparent; }
@@ -210,7 +212,7 @@ a.tl-card:hover { border-color: rgba(141, 176, 255, 0.55); background: var(--sur
 .price-card {
   position: relative; overflow: hidden; display: flex; flex-direction: column; gap: var(--s-3);
   padding: var(--s-6) var(--s-5) var(--s-5);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)), var(--surface);
   border: 1px solid var(--line-strong); border-radius: var(--radius-xl);
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   box-shadow: var(--shadow-2);

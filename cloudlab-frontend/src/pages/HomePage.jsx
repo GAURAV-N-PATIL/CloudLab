@@ -124,7 +124,11 @@ function Landing() {
         <div className="cta-band__glow" aria-hidden="true" />
         <h2>Start with Linux today.</h2>
         <p>Free account, no card. The first topic is already open.</p>
-        <Link to="/signup" className="btn btn--primary btn--lg">Create a free account</Link>
+        <div className="cta-band__actions">
+          <Link to="/signup" className="btn btn--primary btn--lg">Create a free account</Link>
+          {/* Placeholder: opens a public blank page (no login needed). Label and content to be decided. */}
+          <Link to="/explore" className="btn btn--secondary btn--lg">Explore</Link>
+        </div>
       </section>
     </div>
   )

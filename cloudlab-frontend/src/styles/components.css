@@ -11,7 +11,7 @@
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn--primary { background: var(--signal); color: #fff; box-shadow: 0 0 0 1px rgba(255,255,255,0.16) inset, 0 8px 22px -8px var(--signal-glow); }
 .btn--primary:hover:not(:disabled) { background: var(--signal-hover); color: #fff; }
-.btn--secondary { background: var(--glass); color: var(--text); border-color: var(--line-strong); }
+.btn--secondary { background: linear-gradient(var(--glass), var(--glass)), var(--bg-raised); color: var(--text); border-color: var(--line-strong); }
 .btn--secondary:hover:not(:disabled) { background: var(--surface-2); border-color: rgba(255,255,255,0.28); color: var(--text); }
 .btn--ghost { background: transparent; color: var(--text-soft); }
 .btn--ghost:hover:not(:disabled) { background: var(--glass); color: var(--text); }
@@ -30,13 +30,13 @@
 .badge {
   display: inline-flex; align-items: center; gap: var(--s-1);
   font-size: var(--text-xs); font-weight: 700; padding: 0.18rem 0.6rem;
-  border-radius: 999px; background: var(--glass); color: var(--text-soft);
+  border-radius: 999px; background: linear-gradient(var(--glass), var(--glass)), var(--bg-raised); color: var(--text-soft);
   border: 1px solid var(--line); white-space: nowrap;
 }
-.badge--done { background: var(--done-tint); color: var(--done); border-color: transparent; }
-.badge--open { background: var(--signal-tint); color: var(--signal-text); border-color: transparent; }
-.badge--locked { background: transparent; color: var(--text-faint); }
-.badge--free { background: var(--done-tint); color: var(--done); border-color: transparent; }
+.badge--done { background: linear-gradient(var(--done-tint), var(--done-tint)), var(--bg-raised); color: var(--done); border-color: transparent; }
+.badge--open { background: linear-gradient(var(--signal-tint), var(--signal-tint)), var(--bg-raised); color: var(--signal-text); border-color: transparent; }
+.badge--locked { background: var(--bg-raised); color: var(--text-faint); }
+.badge--free { background: linear-gradient(var(--done-tint), var(--done-tint)), var(--bg-raised); color: var(--done); border-color: transparent; }
 
 /* ---------- Progress ---------- */
 .progress { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
@@ -63,7 +63,7 @@
 }
 .field input::placeholder { color: var(--text-faint); }
 .field input:hover { border-color: rgba(255,255,255,0.28); }
-.field input:focus-visible { outline: none; border-color: var(--signal-text); background: var(--signal-tint); box-shadow: 0 0 0 3px rgba(91,147,255,0.2); }
+.field input:focus-visible { outline: none; border-color: var(--signal-text); background: linear-gradient(var(--signal-tint), var(--signal-tint)), var(--surface); box-shadow: 0 0 0 3px rgba(91,147,255,0.2); }
 .field__hint { font-size: var(--text-xs); color: var(--text-faint); }
 .field__wrap { position: relative; }
 .field__wrap input { padding-right: 3rem; }
@@ -79,12 +79,12 @@
 .notice {
   display: flex; gap: var(--s-3); align-items: flex-start;
   padding: var(--s-3) var(--s-4); border-radius: var(--radius-md);
-  background: var(--signal-tint); color: var(--text); font-size: var(--text-sm);
+  background: linear-gradient(var(--signal-tint), var(--signal-tint)), var(--surface); color: var(--text); font-size: var(--text-sm);
   border: 1px solid rgba(91,147,255,0.22);
 }
 .notice p { margin: 0; }
-.notice--error { background: var(--danger-tint); color: var(--danger); border-color: rgba(255,140,126,0.28); }
-.notice--success { background: var(--done-tint); color: var(--done); border-color: rgba(63,211,154,0.28); }
+.notice--error { background: linear-gradient(var(--danger-tint), var(--danger-tint)), var(--surface); color: var(--danger); border-color: rgba(255,140,126,0.28); }
+.notice--success { background: linear-gradient(var(--done-tint), var(--done-tint)), var(--surface); color: var(--done); border-color: rgba(63,211,154,0.28); }
 
 /* ---------- Loading, empty, error ---------- */
 .skeleton {

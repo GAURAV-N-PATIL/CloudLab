@@ -41,11 +41,11 @@ a.row:hover .row__go { color: var(--signal-text); transform: translateX(3px); }
 .chip {
   display: inline-flex; align-items: center; gap: var(--s-2); cursor: pointer;
   padding: 0.5rem 1rem; border-radius: 999px; font-weight: 600; font-size: var(--text-sm);
-  background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line-strong); color: var(--text-soft);
+  background: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), var(--bg-raised); border: 1px solid var(--line-strong); color: var(--text-soft);
   transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 .chip:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.3); }
-.chip.is-active { color: var(--text); background: var(--signal-tint); border-color: rgba(141, 176, 255, 0.6); box-shadow: 0 0 0 3px rgba(91, 147, 255, 0.12); }
+.chip.is-active { color: var(--text); background: linear-gradient(var(--signal-tint), var(--signal-tint)), var(--bg-raised); border-color: rgba(141, 176, 255, 0.6); box-shadow: 0 0 0 3px rgba(91, 147, 255, 0.12); }
 .chip__count { font-size: var(--text-xs); color: var(--text-faint); }
 .chip.is-active .chip__count { color: var(--signal-text); }
 
@@ -58,7 +58,7 @@ a.row:hover .row__go { color: var(--signal-text); transform: translateX(3px); }
 .dash-hero {
   display: flex; align-items: center; justify-content: space-between; gap: var(--s-7);
   padding: var(--s-7); position: relative; overflow: hidden;
-  background: linear-gradient(135deg, rgba(59, 111, 232, 0.2), var(--surface) 55%);
+  background: linear-gradient(135deg, rgba(59, 111, 232, 0.2), var(--surface) 55%), var(--surface);
   border-color: rgba(141, 176, 255, 0.28);
 }
 .dash-hero::after { content: ''; position: absolute; right: -120px; top: -140px; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle, rgba(91, 147, 255, 0.28), transparent 65%); pointer-events: none; }
@@ -119,6 +119,7 @@ a.row:hover .row__go { color: var(--signal-text); transform: translateX(3px); }
 .pd-main section { scroll-margin-top: 96px; }
 .pd-note { color: var(--text-faint) !important; font-size: var(--text-xs) !important; }
 .pd-contents, .pd-side { position: sticky; top: 94px; }
+.pd-contents { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: var(--s-4); }
 .pd-contents h2 { font-size: var(--text-xs); font-family: var(--font-body); font-weight: 700; color: var(--text-faint); margin-bottom: var(--s-3); }
 .pd-contents ol { display: grid; gap: 2px; }
 .pd-contents a {

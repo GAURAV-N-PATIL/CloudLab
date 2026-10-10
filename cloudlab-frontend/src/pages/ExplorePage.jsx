@@ -1,4 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft } from 'lucide-react'
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/motion'
 import { isResourceAvailable } from '../lib/drive'
 import resourceData from '../data/resources.json'
@@ -55,6 +57,9 @@ export default function ExplorePage() {
   return (
     <div className="rl" ref={pageRef}>
       <header className="rl-head">
+        <Link to="/home" className="btn btn--secondary rl-back">
+          <ArrowLeft size={16} aria-hidden="true" /> Back to Home
+        </Link>
         <h1>Assignments &amp; Experiment</h1>
         <p>
           Experiments, assignments and tutorials, plus each team member&apos;s certificate and index.

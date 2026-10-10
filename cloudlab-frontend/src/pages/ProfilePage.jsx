@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Award, Check } from 'lucide-react'
+import { Award, Check, FileText } from 'lucide-react'
 import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
 import { useAsync } from '../lib/useAsync'
@@ -63,6 +63,9 @@ function ProfileView({ user, topics, certificates, subscription, projects }) {
             </span>
           </div>
         </div>
+        <Link to="/explore" className="btn btn--secondary pf-head__action">
+          <FileText size={16} aria-hidden="true" /> Assignments &amp; Experiments
+        </Link>
       </header>
 
       <div className="pf-grid">

@@ -132,3 +132,9 @@ html.is-modal-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .viewer[open], .viewer::backdrop { animation: none; }
 }
+
+/* Back-to-home button on the Assignments & Experiment page */
+.rl-back { margin-bottom: var(--s-5); }
+
+/* Profile header: push the Assignments & Experiments button to the right on wide screens */
+.pf-head__action { margin-left: auto; }

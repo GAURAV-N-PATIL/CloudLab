@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import NavBar from './NavBar'
-import Footer from './Footer'
+import { isMockMode } from '../api'
 
 export default function AppShell() {
   return (
@@ -10,7 +10,12 @@ export default function AppShell() {
       <main id="main" className="main">
         <Outlet />
       </main>
-      <Footer />
+      <footer className="footer">
+        <div className="footer__inner">
+          CloudLab, a cloud and DevOps learning path.
+          {isMockMode && ' Running on mock data: progress is stored in this browser only.'}
+        </div>
+      </footer>
     </div>
   )
 }

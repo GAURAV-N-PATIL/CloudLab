@@ -1,32 +1,23 @@
-/* Design tokens (dark theme). Change values here, not in components.
-   One dark neutral family, one accent (signal), and two status colors (done, danger). */
+/* Design tokens. Change values here, not in components.
+   One dark neutral (ink), one light neutral (paper), one accent (signal). */
 :root {
-  color-scheme: dark;
-
-  /* Surfaces */
-  --bg: #080d14;
-  --bg-raised: #0c141e;
-  --surface: #101a27;
-  --surface-2: #15212f;
-  --glass: rgba(255, 255, 255, 0.04);
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.16);
-
-  /* Text */
-  --text: #e9eef5;
-  --text-soft: #a3b0c0;
-  --text-faint: #7b8a9c;
-
-  /* Accent and status */
-  --signal: #3b6fe8;          /* buttons, fills */
-  --signal-hover: #5588f5;
-  --signal-text: #8db0ff;     /* accent used as text on dark */
-  --signal-tint: rgba(91, 147, 255, 0.14);
-  --signal-glow: rgba(91, 147, 255, 0.55);
-  --done: #3fd39a;
-  --done-tint: rgba(63, 211, 154, 0.13);
-  --danger: #ff8c7e;
-  --danger-tint: rgba(255, 140, 126, 0.12);
+  /* Color */
+  --ink: #14202b;
+  --ink-soft: #3d4b59;
+  --ink-faint: #6b7886;
+  --paper: #f4f6f8;
+  --surface: #ffffff;
+  --line: #dde3e9;
+  --line-strong: #c3ccd5;
+  --signal: #2f5bd8;
+  --signal-strong: #2347b3;
+  --signal-tint: #e7edfc;
+  --done: #23805a;
+  --done-tint: #e3f3ec;
+  --locked: #8a96a3;
+  --locked-tint: #eceff2;
+  --danger: #b3382c;
+  --danger-tint: #fbebe9;
 
   /* Type */
   --font-display: 'Sora Variable', 'Sora', system-ui, sans-serif;
@@ -36,7 +27,7 @@
   --text-md: 1.0625rem;
   --text-lg: 1.375rem;
   --text-xl: 1.875rem;
-  --text-2xl: clamp(2.5rem, 5.6vw, 4.5rem);
+  --text-2xl: clamp(2.25rem, 4.5vw, 3.5rem);
 
   /* Spacing: 4px base */
   --s-1: 0.25rem;
@@ -47,22 +38,21 @@
   --s-6: 2rem;
   --s-7: 3rem;
   --s-8: 4.5rem;
-  --s-9: 7rem;
 
   /* Shape and elevation */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-  --radius-xl: 22px;
-  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-2: 0 18px 40px -12px rgba(0, 0, 0, 0.55);
+  --shadow-1: 0 1px 2px rgba(20, 32, 43, 0.06);
+  --shadow-2: 0 6px 20px rgba(20, 32, 43, 0.08);
 
-  /* Motion (CSS-side; Anime.js and GSAP set their own) */
+  /* Motion */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --dur-fast: 140ms;
   --dur: 240ms;
+  --dur-slow: 700ms;
 
   /* Layout */
-  --page-width: 1120px;
+  --page-width: 1080px;
   --reading-width: 720px;
 }

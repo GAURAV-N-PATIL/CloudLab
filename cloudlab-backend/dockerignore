@@ -1,0 +1,4 @@
+target/
+.mvn/wrapper/*.jar
+*.md
+.git

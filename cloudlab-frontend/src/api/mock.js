@@ -107,7 +107,8 @@ const toResource = ({ id, type, title, url, orderIndex }) => ({ id, type, title,
 export const mockApi = {
   async login(email, password) {
     const db = loadDb()
-    const user = db.users[email.trim().toLowerCase()]
+    const key = email.trim().toLowerCase()
+    const user = db.users[key === 'demo' ? 'demo@cloudlab.dev' : key]
     if (!user || user.password !== password) throw new ApiError(401, 'Invalid email or password')
     return wait({ token: `mock.${user.email}` })
   },

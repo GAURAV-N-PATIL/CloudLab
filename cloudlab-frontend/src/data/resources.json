@@ -1,0 +1,305 @@
+{
+  "sections": [
+    {
+      "id": "experiments",
+      "title": "Experiments",
+      "description": "Ten practical experiments, two hours each.",
+      "resources": [
+        {
+          "id": "experiment-01",
+          "title": "Experiment no. 1",
+          "description": "Business Idea Generation using Mind Mapping.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "01"
+        },
+        {
+          "id": "experiment-02",
+          "title": "Experiment no. 2",
+          "description": "Conducting Market Research & Customer Validation.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "02"
+        },
+        {
+          "id": "experiment-03",
+          "title": "Experiment no. 3",
+          "description": "Preparing a Business Model Canvas for a Startup Idea.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "03"
+        },
+        {
+          "id": "experiment-04",
+          "title": "Experiment no. 4",
+          "description": "Developing a Financial Plan & Break-even Analysis.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "04"
+        },
+        {
+          "id": "experiment-05",
+          "title": "Experiment no. 5",
+          "description": "Creating a Website using WordPress/Wix.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "05"
+        },
+        {
+          "id": "experiment-06",
+          "title": "Experiment no. 6",
+          "description": "Social Media Marketing Campaign using Open-source Tools.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "06"
+        },
+        {
+          "id": "experiment-07",
+          "title": "Experiment no. 7",
+          "description": "Digital Prototyping using Figma/Inkscape.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "07"
+        },
+        {
+          "id": "experiment-08",
+          "title": "Experiment no. 8",
+          "description": "Business Pitch Deck Preparation & Presentation.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "08"
+        },
+        {
+          "id": "experiment-09",
+          "title": "Experiment no. 9",
+          "description": "Exploring Government Schemes for Startups.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "09"
+        },
+        {
+          "id": "experiment-10",
+          "title": "Experiment no. 10",
+          "description": "Legal Compliance & IPR Basics (Case Study).",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Experiment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "10"
+        }
+      ]
+    },
+    {
+      "id": "assignments",
+      "title": "Assignments & Tutorials",
+      "description": "Six assignments, with the first split into parts a and b.",
+      "resources": [
+        {
+          "id": "assignment-1a",
+          "title": "Assignment no. 1a",
+          "description": "Write a report on any successful entrepreneur and their startup journey.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Assignment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "1A"
+        },
+        {
+          "id": "assignment-1b",
+          "title": "Assignment no. 1b",
+          "description": "Conduct SWOT analysis for a real-life startup.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Assignment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "1B"
+        },
+        {
+          "id": "assignment-2",
+          "title": "Assignment no. 2",
+          "description": "Develop a business idea and create a one-page business plan.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Assignment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "2"
+        },
+        {
+          "id": "assignment-3",
+          "title": "Assignment no. 3",
+          "description": "Conduct market research using surveys & present findings.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Assignment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "3"
+        },
+        {
+          "id": "assignment-4",
+          "title": "Assignment no. 4",
+          "description": "Design a simple logo and branding strategy for a startup.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Assignment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "4"
+        },
+        {
+          "id": "assignment-5",
+          "title": "Assignment no. 5",
+          "description": "Create a financial model and cost estimation for a startup.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Assignment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "5"
+        },
+        {
+          "id": "assignment-6",
+          "title": "Assignment no. 6",
+          "description": "Make a case study report on startup failure analysis.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Assignment",
+            "2 hrs"
+          ],
+          "badge": null,
+          "coverText": "6"
+        }
+      ]
+    },
+    {
+      "id": "certificate-index",
+      "title": "Certificate & Index",
+      "description": "One document per team member.",
+      "resources": [
+        {
+          "id": "certificate-b315",
+          "title": "Roll no. B315 (Leader)",
+          "description": "Built the website and delivered the presentation.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Certificate",
+            "Index"
+          ],
+          "badge": null,
+          "coverText": "B315"
+        },
+        {
+          "id": "certificate-b313",
+          "title": "Roll no. B313 (Member)",
+          "description": "Prepared the documentation and the presentation.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Certificate",
+            "Index"
+          ],
+          "badge": null,
+          "coverText": "B313"
+        },
+        {
+          "id": "certificate-b319",
+          "title": "Roll no. B319 (Member)",
+          "description": "Prepared the documentation and the presentation.",
+          "previewImage": null,
+          "googleDriveFileId": null,
+          "available": false,
+          "tags": [
+            "Certificate",
+            "Index"
+          ],
+          "badge": null,
+          "coverText": "B319"
+        }
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@ import ProfilePage from './pages/ProfilePage'
 import PricingPage from './pages/PricingPage'
 import AuthForm from './pages/AuthForm'
 import NotFoundPage from './pages/NotFoundPage'
-import BlankPage from './pages/BlankPage'
+import ExplorePage from './pages/ExplorePage'
 
 export default function App() {
   return (
@@ -28,7 +28,7 @@ export default function App() {
           <Route index element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/explore" element={<BlankPage />} />
+          <Route path="/explore" element={<ExplorePage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/roadmap" element={<RoadmapPage />} />

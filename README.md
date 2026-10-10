@@ -94,6 +94,58 @@ The frontend has two modes, controlled by `VITE_USE_MOCK` in `.env.local`:
 - `VITE_USE_MOCK=true`: runs entirely in the browser on mock data that mirrors the real API. No backend needed. Demo login: `demo@cloudlab.dev` / `password123`.
 - `VITE_USE_MOCK=false`: calls the real backend. In dev, Vite proxies `/api` to `http://localhost:8080`, so no CORS setup is needed.
 
+## Assignments & Experiment library
+
+The public `/explore` page ("Assignments & Experiment") lists experiments, assignments and each team member's certificate and index. Every card opens its PDF in a viewer on the same page. There is no database or backend for this: the list is a JSON file and the PDFs live in Google Drive.
+
+### Where the data lives
+
+`cloudlab-frontend/src/data/resources.json`. It holds sections, and each section holds resources:
+
+```json
+{
+  "id": "experiment-01",
+  "title": "Experiment no. 1",
+  "description": "Business Idea Generation using Mind Mapping.",
+  "previewImage": null,
+  "googleDriveFileId": null,
+  "available": false,
+  "tags": ["Experiment", "2 hrs"],
+  "badge": null,
+  "coverText": "01"
+}
+```
+
+`badge` (a small label on the cover) and `coverText` (the big text on the placeholder cover) are optional. Add, edit or remove entries in this file only; the page and card code never need to change.
+
+### Upload a PDF to Google Drive and get its file ID
+
+1. Upload the PDF to Google Drive.
+2. Right-click the file, choose **Share**, and under General access choose **Anyone with the link**, role **Viewer**. Without this the viewer shows a Google sign-in page instead of the document.
+3. Copy the link. It looks like `https://drive.google.com/file/d/FILE_ID/view?usp=sharing`. The file ID is the part between `/d/` and `/view`.
+
+### Add a resource before its PDF exists
+
+Add the entry with `"googleDriveFileId": null` and `"available": false`. The card shows a "Coming soon" badge and nothing opens when it is clicked.
+
+### Make a resource available later
+
+Paste the file ID into `googleDriveFileId` and set `"available": true`. Both are required: a card with `available: true` but no valid ID stays locked. The viewer opens `https://drive.google.com/file/d/FILE_ID/preview`.
+
+### Add or replace a preview image
+
+Export the first page of the PDF as a PNG or JPG (around 800 px wide), save it in `cloudlab-frontend/public/resources/previews/`, and set `"previewImage": "/resources/previews/experiment-01.png"`. With no image, or if the image fails to load, the card shows a generated placeholder cover.
+
+### Test the viewer
+
+1. Run `npm run dev` in `cloudlab-frontend` and open <http://localhost:5173/explore>.
+2. Set one entry to `available: true` with a real file ID (shared as above).
+3. Click the card: the viewer opens with the title in the header. Press Escape or the close button to close it; focus returns to the card.
+
+### Limitations
+
+A static JSON file is public. Anyone who can load the site can read the file IDs, and anyone with the Drive link can open the PDF. This setup does not protect paid or private documents. If some documents must be restricted, they need access control in the backend instead.
+
 ## Status
 
 - [x] Database schema and seed data

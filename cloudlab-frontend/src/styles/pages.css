@@ -86,7 +86,6 @@
 .cta-band h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
 .cta-band p { margin: 0 auto var(--s-5); color: var(--text-soft); }
 .cta-band__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); }
-.blank-page { min-height: 55vh; }
 .cta-band__glow { position: absolute !important; inset: auto 0 -60% 0; height: 100%; background: radial-gradient(ellipse at 50% 100%, rgba(59, 111, 232, 0.4), transparent 65%); pointer-events: none; }
 
 /* ======================= Dashboard / profile ======================= */

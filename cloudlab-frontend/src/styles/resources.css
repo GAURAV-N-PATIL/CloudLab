@@ -66,7 +66,14 @@ div.ncard { cursor: default; }
     repeating-linear-gradient(135deg, rgba(141, 176, 255, 0.07) 0 1px, transparent 1px 9px),
     linear-gradient(160deg, var(--surface-2), var(--bg-raised));
 }
-.ncard__placeholder-text { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.4rem, 5vw, 3.2rem); letter-spacing: -0.05em; color: rgba(141, 176, 255, 0.4); }
+.ncard__placeholder-text { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.4rem, 5vw, 3.2rem); letter-spacing: -0.05em; color: rgba(141, 176, 255, 0.4); transition: color var(--dur) var(--ease), text-shadow var(--dur) var(--ease), transform var(--dur) var(--ease); }
+/* Hover / keyboard focus: the big number lights up in the accent colour with a soft glow. */
+.ncard:not(.is-unavailable):hover .ncard__placeholder-text,
+.ncard:not(.is-unavailable):focus-visible .ncard__placeholder-text {
+  color: var(--signal-hover);
+  text-shadow: 0 0 28px var(--signal-glow);
+  transform: scale(1.06);
+}
 
 .ncard__badges { position: absolute; left: 8px; top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
 .ncard__badge {

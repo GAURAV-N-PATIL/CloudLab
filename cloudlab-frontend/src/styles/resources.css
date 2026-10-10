@@ -145,3 +145,13 @@ html.is-modal-open { overflow: hidden; }
 
 /* Profile header: push the Assignments & Experiments button to the right on wide screens */
 .pf-head__action { margin-left: auto; }
+
+/* Tilt: GSAP drives the transform, so the CSS transform transition and hover lift step aside. */
+.ncard.is-tilt { transition: filter var(--dur) var(--ease); will-change: transform; }
+.ncard.is-tilt:hover, .ncard.is-tilt:focus-visible { transform: none; }
+.ncard__glare {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0; z-index: 1;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(141, 176, 255, 0.17), transparent 62%);
+  transition: opacity 0.3s var(--ease);
+}
+.ncard:not(.is-unavailable):hover .ncard__glare { opacity: 1; }

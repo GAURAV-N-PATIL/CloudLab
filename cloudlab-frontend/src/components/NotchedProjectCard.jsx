@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, Clock, FileText } from 'lucide-react'
+import { gsap, prefersReducedMotion } from '../lib/motion'
 
 // A card with a notched top-right corner, a rounded cover, optional monochrome cover,
 // a title, a description and tags. One markup for both states:
@@ -9,6 +10,48 @@ export default function NotchedProjectCard({ resource, available, monochrome = t
   const { title, description, previewImage, coverText, tags = [], badge } = resource
   const [imageFailed, setImageFailed] = useState(false)
   const showImage = Boolean(previewImage) && !imageFailed
+  const ref = useRef(null)
+
+  // Tilt toward the cursor (same feel as the Projects page cards). Only for cards that open a PDF,
+  // and skipped on touch devices and for "reduce motion".
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !available || prefersReducedMotion()) return
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+
+    el.classList.add('is-tilt')
+    const max = 7
+    const lift = -4
+    gsap.set(el, { transformPerspective: 900, transformOrigin: '50% 50%' })
+    const opts = { duration: 0.5, ease: 'power3.out' }
+    const rotX = gsap.quickTo(el, 'rotationX', opts)
+    const rotY = gsap.quickTo(el, 'rotationY', opts)
+    const moveX = gsap.quickTo(el, 'x', opts)
+    const moveY = gsap.quickTo(el, 'y', opts)
+
+    function onMove(e) {
+      const r = el.getBoundingClientRect()
+      const px = (e.clientX - r.left) / r.width - 0.5
+      const py = (e.clientY - r.top) / r.height - 0.5
+      rotY(px * max * 2)
+      rotX(-py * max * 2)
+      moveX(px * 10)
+      moveY(py * 10 + lift)
+      el.style.setProperty('--mx', `${(px + 0.5) * 100}%`)
+      el.style.setProperty('--my', `${(py + 0.5) * 100}%`)
+    }
+    function onLeave() { rotX(0); rotY(0); moveX(0); moveY(0) }
+
+    el.addEventListener('pointermove', onMove)
+    el.addEventListener('pointerleave', onLeave)
+    return () => {
+      el.removeEventListener('pointermove', onMove)
+      el.removeEventListener('pointerleave', onLeave)
+      gsap.killTweensOf(el)
+      gsap.set(el, { clearProps: 'transform' })
+      el.classList.remove('is-tilt')
+    }
+  }, [available])
 
   const Tag = available ? 'button' : 'div'
   const interactive = available
@@ -22,6 +65,7 @@ export default function NotchedProjectCard({ resource, available, monochrome = t
 
   return (
     <Tag
+      ref={ref}
       className={`ncard${available ? '' : ' is-unavailable'}${monochrome ? ' is-mono' : ''}`}
       {...interactive}
     >
@@ -32,6 +76,7 @@ export default function NotchedProjectCard({ resource, available, monochrome = t
       </span>
 
       <span className="ncard__body">
+        <span className="ncard__glare" aria-hidden="true" />
         <span className="ncard__cover">
           {showImage ? (
             <img src={previewImage} alt="" loading="lazy" onError={() => setImageFailed(true)} />

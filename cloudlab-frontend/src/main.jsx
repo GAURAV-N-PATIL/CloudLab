@@ -8,6 +8,8 @@ import './styles/base.css'
 import './styles/layout.css'
 import './styles/components.css'
 import './styles/pages.css'
+import './styles/screens.css'
+import './styles/background.css'
 import App from './App'
 import { AuthProvider } from './context/AuthContext'
 

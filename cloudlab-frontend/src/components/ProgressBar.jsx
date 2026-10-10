@@ -1,3 +1,5 @@
+import CountUp from './CountUp'
+
 export default function ProgressBar({ percent, label, detail }) {
   const value = Math.max(0, Math.min(100, percent))
   return (
@@ -18,7 +20,7 @@ export default function ProgressBar({ percent, label, detail }) {
       {detail && (
         <div className="progress-meta">
           <span>{detail}</span>
-          <span>{value}%</span>
+          <span aria-hidden="true"><CountUp value={value} suffix="%" /></span>
         </div>
       )}
     </div>

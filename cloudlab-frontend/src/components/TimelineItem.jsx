@@ -3,13 +3,14 @@ import { Check, Lock } from 'lucide-react'
 import StatusBadge from './StatusBadge'
 
 // One stop on the roadmap timeline. Cards alternate sides on wide screens.
-export default function TimelineItem({ topic, side, isNext }) {
+export default function TimelineItem({ topic, side, isNext, number }) {
   const locked = topic.status === 'LOCKED'
   const body = (
     <>
       <span className="tl-card__top">
         <StatusBadge status={topic.status} />
         {isNext && <span className="tl-card__next">Up next</span>}
+        <span className="tl-card__index" aria-hidden="true">{String(number).padStart(2, '0')}</span>
       </span>
       <span className="tl-card__title">{topic.name}</span>
       <span className="tl-card__desc">
@@ -19,7 +20,10 @@ export default function TimelineItem({ topic, side, isNext }) {
   )
 
   return (
-    <li className={`tl-item tl-item--${side} tl-item--${topic.status.toLowerCase()}${isNext ? ' tl-item--next' : ''}`}>
+    <li
+      id={`topic-${topic.slug}`}
+      className={`tl-item tl-item--${side} tl-item--${topic.status.toLowerCase()}${isNext ? ' tl-item--next' : ''}`}
+    >
       <span className="tl-marker" aria-hidden="true">
         <span className="tl-dot">
           {topic.status === 'COMPLETED' && <Check size={14} strokeWidth={3} />}

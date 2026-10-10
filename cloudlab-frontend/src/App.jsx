@@ -1,5 +1,6 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import AppShell from './components/AppShell'
+import GridBackground from './components/GridBackground'
 import ProtectedRoute from './components/ProtectedRoute'
 import HomePage from './pages/HomePage'
 import RoadmapPage from './pages/RoadmapPage'
@@ -13,24 +14,31 @@ import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<AppShell />}>
-        <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/login" element={<AuthForm mode="login" />} />
-        <Route path="/signup" element={<AuthForm mode="signup" />} />
-
-        <Route element={<ProtectedRoute />}>
-          <Route path="/roadmap" element={<RoadmapPage />} />
-          <Route path="/roadmap/:slug" element={<TopicPage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/projects/:slug" element={<ProjectDetailPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+    <>
+      <GridBackground />
+      <Routes>
+        {/* Login and signup are full-screen: no nav bar or footer. */}
+        <Route element={<Outlet />}>
+          <Route path="/login" element={<AuthForm mode="login" />} />
+          <Route path="/signup" element={<AuthForm mode="signup" />} />
         </Route>
 
-        <Route path="*" element={<NotFoundPage />} />
-      </Route>
-    </Routes>
+        <Route element={<AppShell />}>
+          <Route index element={<Navigate to="/home" replace />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/roadmap" element={<RoadmapPage />} />
+            <Route path="/roadmap/:slug" element={<TopicPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
+
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </>
   )
 }

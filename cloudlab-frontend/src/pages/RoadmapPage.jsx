@@ -6,7 +6,8 @@ import { useAuth } from '../context/AuthContext'
 import { useAsync } from '../lib/useAsync'
 import { findNextTopic, summarizeProgress, titleCase } from '../lib/format'
 import { prefersReducedMotion } from '../lib/motion'
-import ProgressBar from '../components/ProgressBar'
+import ProgressRing from '../components/ProgressRing'
+import StatusBadge from '../components/StatusBadge'
 import TimelineItem from '../components/TimelineItem'
 import CloudChoice from '../components/CloudChoice'
 import { ErrorState, PageSkeleton, EmptyState } from '../components/States'
@@ -35,26 +36,49 @@ export default function RoadmapPage() {
     .map((level) => ({ level, items: topics.filter((t) => t.level === level) }))
     .filter((g) => g.items.length > 0)
 
+  const counts = {
+    COMPLETED: topics.filter((t) => t.status === 'COMPLETED').length,
+    OPEN: topics.filter((t) => t.status === 'UNLOCKED' || t.status === 'IN_PROGRESS').length,
+    LOCKED: topics.filter((t) => t.status === 'LOCKED').length,
+  }
+
+  function jumpToNext() {
+    document.getElementById(`topic-${next.slug}`)?.scrollIntoView({
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center',
+    })
+  }
+
   // Alternate sides across the whole timeline, not per group.
   let index = 0
 
   return (
     <div>
-      <div className="page-head roadmap-head">
-        <div>
-          <h1>Roadmap</h1>
-          <p>
-            {user.selectedCloudName
-              ? `Provider-neutral topics, then the ${user.selectedCloudName} track.`
-              : 'Complete these in order. Each topic opens the next.'}
-          </p>
-        </div>
-        {next && <Link to={`/roadmap/${next.slug}`} className="btn btn--primary">Continue: {next.name}</Link>}
+      <div className="page-head">
+        <h1>Roadmap</h1>
+        <p>
+          {user.selectedCloudName
+            ? `Provider-neutral topics, then the ${user.selectedCloudName} track.`
+            : 'Complete these in order. Each topic opens the next.'}
+        </p>
       </div>
 
-      <div className="card card--flat roadmap-summary">
-        <ProgressBar percent={percent} label="Roadmap progress" detail={`${completed} of ${total} topics completed`} />
-      </div>
+      <section className="rm-summary panel" aria-label="Roadmap summary">
+        <ProgressRing percent={percent} label="Roadmap progress" size={104} />
+        <div className="rm-summary__body">
+          <strong className="rm-summary__count">{completed} of {total} topics completed</strong>
+          <ul className="rm-legend" aria-label="Topic counts">
+            <li><StatusBadge status="COMPLETED" /> <span>{counts.COMPLETED}</span></li>
+            <li><StatusBadge status="UNLOCKED" /> <span>{counts.OPEN}</span></li>
+            <li><StatusBadge status="LOCKED" /> <span>{counts.LOCKED}</span></li>
+          </ul>
+        </div>
+        {next && (
+          <div className="rm-summary__actions">
+            <Link to={`/roadmap/${next.slug}`} className="btn btn--primary">Continue: {next.name}</Link>
+            <button type="button" className="btn btn--ghost" onClick={jumpToNext}>Jump to it on the path</button>
+          </div>
+        )}
+      </section>
 
       {showCloudChoice && <CloudChoice providers={providers} onChosen={refreshUser} />}
 
@@ -67,16 +91,20 @@ export default function RoadmapPage() {
       <Timeline>
         {groups.map((group) => (
           <li key={group.level} className="tl-group">
-            <span className="tl-level">{titleCase(group.level)}</span>
+            <span className="tl-level">{titleCase(group.level)} <em>{group.items.filter((t) => t.status === 'COMPLETED').length}/{group.items.length}</em></span>
             <ol className="tl-group__list">
-              {group.items.map((topic) => (
-                <TimelineItem
-                  key={topic.id}
-                  topic={topic}
-                  side={index++ % 2 === 0 ? 'left' : 'right'}
-                  isNext={next?.slug === topic.slug}
-                />
-              ))}
+              {group.items.map((topic) => {
+                const n = index++
+                return (
+                  <TimelineItem
+                    key={topic.id}
+                    topic={topic}
+                    number={n + 1}
+                    side={n % 2 === 0 ? 'left' : 'right'}
+                    isNext={next?.slug === topic.slug}
+                  />
+                )
+              })}
             </ol>
           </li>
         ))}

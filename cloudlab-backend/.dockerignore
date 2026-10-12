@@ -2,3 +2,4 @@ target/
 .mvn/wrapper/*.jar
 *.md
 .git
+src/test/

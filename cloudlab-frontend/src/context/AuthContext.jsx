@@ -23,8 +23,9 @@ export function AuthProvider({ children }) {
   // Restore the session on first load.
   useEffect(() => {
     if (!tokenStore.get()) return
+    // Only a rejected token ends the session; a network blip or server error should not log the user out.
     refreshUser()
-      .catch(() => tokenStore.clear())
+      .catch((err) => { if (err.status === 401) tokenStore.clear() })
       .finally(() => setLoading(false))
   }, [refreshUser])
 

@@ -2,10 +2,10 @@ package cloudlab_backend.controller;
 
 import cloudlab_backend.entity.CloudProvider;
 import cloudlab_backend.service.CloudProviderService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,9 +29,10 @@ public class CloudProviderController{
     @GetMapping("/{id}")
     public ResponseEntity<CloudProviderSummary> getCloudProvider(@PathVariable Long id) {
         return cloudProviderService.getCloudProviderById(id)
+                .filter(cp -> Boolean.TRUE.equals(cp.getActive()))
                 .map(CloudProviderSummary::from)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .orElseThrow(() -> new NoSuchElementException("Cloud provider not found"));
     }
     public static class CloudProviderSummary{
         private Long id;

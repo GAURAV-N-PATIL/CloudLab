@@ -1,5 +1,4 @@
 package cloudlab_backend.security;
-import cloudlab_backend.entity.User;
 import cloudlab_backend.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,7 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+
+// Authenticates "Authorization: Bearer <jwt>" requests. The principal is the User entity
+// (loaded with its selected cloud), so controllers take it via @AuthenticationPrincipal
+// instead of looking the user up a second time.
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
@@ -31,28 +33,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader == null ||!authorizationHeader.startsWith("Bearer ")){
-            filterChain.doFilter(request, response);
-            return;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+            jwtUtil.extractValidEmail(authorizationHeader.substring(7))
+                    .flatMap(userRepository::findByEmail)
+                    .ifPresent(user -> SecurityContextHolder.getContext().setAuthentication(
+                            new UsernamePasswordAuthenticationToken(
+                                    user,
+                                    null,
+                                    List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
+                            )
+                    ));
         }
-        String token = authorizationHeader.substring(7);
-        if(!jwtUtil.isTokenValid(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        String email = jwtUtil.extractEmail(token);
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isEmpty()){
-            filterChain.doFilter(request, response);
-            return;
-        }
-        User user = userOptional.get();
-        UsernamePasswordAuthenticationToken authentication=new UsernamePasswordAuthenticationToken(
-                        user.getEmail(),
-                        null,
-                        List.of(new SimpleGrantedAuthority("ROLE_USER"))
-                );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request,response);
     }
 }

@@ -5,7 +5,7 @@ import { animate, stagger } from 'animejs'
 import { prefersReducedMotion } from '../lib/motion'
 import { api } from '../api'
 import { useAsync } from '../lib/useAsync'
-import { titleCase } from '../lib/format'
+import { safeHref, titleCase } from '../lib/format'
 import { youtubePlaylistId, youtubeVideoId } from '../lib/youtube'
 import StatusBadge from '../components/StatusBadge'
 import { ErrorState, PageSkeleton } from '../components/States'
@@ -129,7 +129,7 @@ function Resource({ resource }) {
   const kind = { PDF: 'PDF', ARTICLE: 'Article', YOUTUBE_VIDEO: 'Video', YOUTUBE_PLAYLIST: 'Playlist' }[type] ?? 'Link'
   return (
     <li className="resource">
-      <a href={url} target="_blank" rel="noopener noreferrer" className="resource__link">
+      <a href={safeHref(url)} target="_blank" rel="noopener noreferrer" className="resource__link">
         <Icon size={18} aria-hidden="true" />
         <span>
           <span className="resource__title">{title}</span>

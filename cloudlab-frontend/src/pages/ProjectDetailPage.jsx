@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Check, Circle, ExternalLink, Lock } from 'lucide-react'
 import { api } from '../api'
 import { useAsync } from '../lib/useAsync'
-import { titleCase } from '../lib/format'
+import { safeHref, titleCase } from '../lib/format'
 import { gsap, prefersReducedMotion } from '../lib/motion'
 import StatusBadge from '../components/StatusBadge'
 import ProgressRing from '../components/ProgressRing'
@@ -155,7 +155,7 @@ function ProjectDetail({ project, roadmap, reload }) {
               <ul className="resource-list">
                 {project.resources.map((r) => (
                   <li key={r.id} className="resource">
-                    <a href={r.url} target="_blank" rel="noopener noreferrer" className="resource__link">
+                    <a href={safeHref(r.url)} target="_blank" rel="noopener noreferrer" className="resource__link">
                       <ExternalLink size={18} aria-hidden="true" />
                       <span>
                         <span className="resource__title">{r.title}</span>

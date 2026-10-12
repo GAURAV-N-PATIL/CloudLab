@@ -82,7 +82,9 @@ export default function PricingPage() {
   const isPro = active?.plan === 'MONTHLY' || active?.plan === 'YEARLY'
   const isLifetime = active?.plan === 'LIFETIME'
 
-  function PlanButton({ planId, current, label, featured }) {
+  // A plain render helper, not a component: a component declared in here would be a new type
+  // on every render, so React would remount the button (and drop its focus) each time.
+  function planButton({ planId, current, label, featured }) {
     if (!isAuthenticated) {
       return <Link to="/signup" className={`btn btn--block ${featured ? 'btn--primary' : 'btn--secondary'}`}>Sign up to choose</Link>
     }
@@ -153,7 +155,7 @@ export default function PricingPage() {
           <ul className="price-card__features">
             {PRO_FEATURES.map((f) => <li key={f}><Check size={16} aria-hidden="true" />{f}</li>)}
           </ul>
-          <PlanButton planId={proPlan.id} current={isPro} label={`Choose ${yearly ? 'yearly' : 'monthly'}`} featured />
+          {planButton({ planId: proPlan.id, current: isPro, label: `Choose ${yearly ? 'yearly' : 'monthly'}`, featured: true })}
         </li>
 
         <li className="price-card" onPointerMove={spotlight} onPointerLeave={spotlightOff}>
@@ -164,7 +166,7 @@ export default function PricingPage() {
           <ul className="price-card__features">
             {LIFETIME_FEATURES.map((f) => <li key={f}><Check size={16} aria-hidden="true" />{f}</li>)}
           </ul>
-          <PlanButton planId={LIFETIME.id} current={isLifetime} label="Choose lifetime" />
+          {planButton({ planId: LIFETIME.id, current: isLifetime, label: 'Choose lifetime' })}
         </li>
       </ul>
     </div>

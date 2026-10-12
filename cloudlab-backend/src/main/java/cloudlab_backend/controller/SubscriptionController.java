@@ -3,54 +3,45 @@ package cloudlab_backend.controller;
 import cloudlab_backend.entity.Subscription;
 import cloudlab_backend.entity.User;
 import cloudlab_backend.repository.SubscriptionRepository;
-import cloudlab_backend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/subscriptions")
 public class SubscriptionController{
     private final SubscriptionRepository subscriptionRepository;
-    private final UserRepository userRepository;
-    public SubscriptionController(
-            SubscriptionRepository subscriptionRepository,
-            UserRepository userRepository
-    ) {
+    public SubscriptionController(SubscriptionRepository subscriptionRepository) {
         this.subscriptionRepository = subscriptionRepository;
-        this.userRepository =userRepository;
     }
 
     @GetMapping
     public ResponseEntity<List<SubscriptionResponse>> getMySubscriptions(
-            Authentication authentication
+            @AuthenticationPrincipal User user
     ) {
-        User user = currentUser(authentication);
-        List<SubscriptionResponse> subscriptions = subscriptionRepository
-                .findByUserOrderByCreatedAtDesc(user)
+        return ResponseEntity.ok(subscriptionRepository
+                .findByUser_IdOrderByCreatedAtDesc(user.getId())
                 .stream()
                 .map(SubscriptionResponse::from)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(subscriptions);
+                .toList());
     }
 
+    // 204 when no subscription is ACTIVE and still before its expiry date.
     @GetMapping("/active")
     public ResponseEntity<SubscriptionResponse> getActiveSubscription(
-            Authentication authentication
+            @AuthenticationPrincipal User user
     ) {
-        User user = currentUser(authentication);
+        LocalDateTime now = LocalDateTime.now();
         return subscriptionRepository
-                .findFirstByUserAndStatusOrderByCreatedAtDesc(user, Subscription.Status.ACTIVE)
+                .findByUser_IdAndStatusOrderByCreatedAtDesc(user.getId(), Subscription.Status.ACTIVE)
+                .stream()
+                .filter(sub -> sub.getExpiresAt() == null || sub.getExpiresAt().isAfter(now))
+                .findFirst()
                 .map(SubscriptionResponse::from)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
-    }
-    private User currentUser(Authentication authentication) {
-        String email = authentication.getName();
-        return userRepository.findByEmail(email).orElseThrow();
     }
     public static class SubscriptionResponse {
         private Long id;

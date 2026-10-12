@@ -22,6 +22,7 @@ export const realApi = {
   completeTopic: (slug) => request(`/roadmap/${encodeURIComponent(slug)}/complete`, { method: 'POST' }),
 
   // Projects. status: LOCKED | UNLOCKED | IN_PROGRESS | SUBMITTED | COMPLETED
+  // The list includes description and requiredTopicSlugs; the detail adds resources.
   getProjects: () => request('/projects'),
   getProject: (slug) => request(`/projects/${encodeURIComponent(slug)}`),
   submitProject: (slug) => request(`/projects/${encodeURIComponent(slug)}/submit`, { method: 'POST' }),

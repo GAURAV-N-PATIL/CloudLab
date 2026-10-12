@@ -9,7 +9,9 @@ Built as a mini project for **Entrepreneurship Development** and **Full Stack Ja
 - Topics unlock in order. Projects unlock once the topics they need are complete.
 - Everyone starts on the provider-neutral path. After finishing it, the learner picks **AWS or Azure once, permanently**.
 - Free: beginner topics and two projects. Paid: the cloud track, remaining projects, certificates.
-- All unlock and gating rules live in the Spring Boot backend. The frontend only displays what the API returns.
+- Finishing every topic on the chosen cloud track issues a certificate automatically.
+- Unlock rules (topic order, project prerequisites, the one-time cloud choice, certificates) live in the Spring Boot backend. The frontend only displays what the API returns.
+- **Not enforced yet:** the free/paid split. There is no payment endpoint (see Status), so the backend does not check subscriptions; every learner can currently reach the cloud track and paid projects.
 
 ## Tech stack
 
@@ -65,7 +67,7 @@ export JWT_SECRET='replace-with-a-long-random-string-of-32-or-more-chars'
    ./mvnw spring-boot:run
    ```
 
-3. Run the tests:
+3. Run the tests (no MySQL needed: they use an in-memory H2 database loaded with `schema_hosted.sql`):
 
    ```bash
    ./mvnw test
@@ -150,12 +152,11 @@ A static JSON file is public. Anyone who can load the site can read the file IDs
 
 - [x] Database schema and seed data
 - [x] Backend: auth, roadmap, projects, cloud selection, subscriptions and certificates (read endpoints), tests
-- [ ] Frontend: scaffold, routing, auth, core flow on mock data (Part A) is in place; live API wiring (Part B) is next
-- [ ] Payments (subscribe/checkout endpoint)
+- [x] Frontend: routing, auth and the core flow, on mock data (Part A) or the live API (Part B)
+- [x] Certificate issuance when the cloud track is complete
+- [ ] Payments (subscribe/checkout endpoint) and enforcing the free/paid split
 - [ ] Certificate PDF generation
 - [ ] Deployment
-
-## Frontend-improvement branch contents
 
 ## License
 

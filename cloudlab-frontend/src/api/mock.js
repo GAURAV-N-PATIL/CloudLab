@@ -136,6 +136,10 @@ export const mockApi = {
     if (user.selectedCloudSlug) throw new ApiError(409, 'Cloud provider already selected')
     const provider = cloudProviders.find((p) => p.id === cloudProviderId)
     if (!provider) throw new ApiError(404, 'Cloud provider not found')
+    const neutralDone = topics
+      .filter((t) => t.cloud === null)
+      .every((t) => user.topicProgress[t.slug] === 'COMPLETED')
+    if (!neutralDone) throw new ApiError(409, 'Finish the provider-neutral topics before choosing a cloud')
     user.selectedCloudSlug = provider.slug
     saveDb(db)
     return wait(null)
@@ -182,7 +186,9 @@ export const mockApi = {
     const user = currentUser(loadDb())
     return wait(availableProjects(user).map((p) => ({
       id: p.id, title: p.title, slug: p.slug, level: p.level,
-      orderIndex: p.orderIndex, free: p.free, status: projectStatus(p, user),
+      orderIndex: p.orderIndex, description: p.description, free: p.free,
+      status: projectStatus(p, user),
+      requiredTopicSlugs: [...p.requires].sort(),
     })))
   },
 
@@ -194,7 +200,7 @@ export const mockApi = {
       id: project.id, title: project.title, slug: project.slug, level: project.level,
       orderIndex: project.orderIndex, description: project.description, free: project.free,
       status: projectStatus(project, user),
-      requiredTopicSlugs: [...project.requires],
+      requiredTopicSlugs: [...project.requires].sort(),
       resources: project.resources.map(toResource),
     })
   },
@@ -205,6 +211,7 @@ export const mockApi = {
     const project = availableProjects(user).find((p) => p.slug === slug)
     if (!project) throw new ApiError(404, 'Project not found')
     if (!projectUnlocked(project, user)) throw new ApiError(409, 'Project is locked')
+    if (user.projectProgress[slug] === 'COMPLETED') throw new ApiError(409, 'Project is already completed')
     user.projectProgress[slug] = 'SUBMITTED'
     saveDb(db)
     return wait(null)

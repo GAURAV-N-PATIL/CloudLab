@@ -1,4 +1,5 @@
 package cloudlab_backend.dto;
+import static cloudlab_backend.dto.Emails.normalizeEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 public class LoginRequest{
@@ -13,7 +14,7 @@ public class LoginRequest{
         return email;
     }
     public void setEmail(String email){
-        this.email=email;
+        this.email=normalizeEmail(email);
     }
     public String getPassword(){
         return password;

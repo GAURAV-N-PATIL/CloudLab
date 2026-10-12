@@ -16,16 +16,15 @@ const FILTERS = [
   { id: 'done', label: 'Submitted', test: (p) => p.status === 'SUBMITTED' || p.status === 'COMPLETED' },
 ]
 
-// The list endpoint only returns titles, so each project's detail is fetched too, to show
-// its description and the topics it needs. A failed detail just means a plainer card.
+// The list already carries each project's description and required topic slugs;
+// the roadmap supplies those topics' names and statuses.
 async function loadProjects() {
   const [projects, roadmap] = await Promise.all([api.getProjects(), api.getRoadmap()])
-  const details = await Promise.all(projects.map((p) => api.getProject(p.slug).catch(() => null)))
   const topicBySlug = new Map(roadmap.map((t) => [t.slug, t]))
-  return projects.map((p, i) => ({
+  return projects.map((p) => ({
     ...p,
-    description: details[i]?.description ?? '',
-    required: (details[i]?.requiredTopicSlugs ?? []).map((s) => topicBySlug.get(s)).filter(Boolean),
+    description: p.description ?? '',
+    required: (p.requiredTopicSlugs ?? []).map((s) => topicBySlug.get(s)).filter(Boolean),
   }))
 }
 

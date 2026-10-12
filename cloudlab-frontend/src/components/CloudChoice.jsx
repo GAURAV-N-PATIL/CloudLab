@@ -18,7 +18,7 @@ export default function CloudChoice({ providers, onChosen }) {
       await api.selectCloud(selected.id)
       await onChosen()
     } catch (err) {
-      setError(err.status === 409 ? 'A cloud track is already chosen for this account.' : err.message)
+      setError(err.message)
       setConfirming(false)
     } finally {
       setSaving(false)

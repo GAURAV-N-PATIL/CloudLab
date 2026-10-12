@@ -2,58 +2,41 @@ package cloudlab_backend.controller;
 
 import cloudlab_backend.entity.Certificate;
 import cloudlab_backend.entity.User;
-import cloudlab_backend.repository.CertificateRepository;
-import cloudlab_backend.repository.UserRepository;
-import org.springframework.http.HttpStatus;
+import cloudlab_backend.service.CertificateService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/certificates")
 public class CertificateController {
-    private final CertificateRepository certificateRepository;
-    private final UserRepository userRepository;
-    public CertificateController(
-            CertificateRepository certificateRepository,
-            UserRepository userRepository
-    ) {
-        this.certificateRepository = certificateRepository;
-        this.userRepository = userRepository;
+    private final CertificateService certificateService;
+    public CertificateController(CertificateService certificateService) {
+        this.certificateService = certificateService;
     }
 
     @GetMapping
     public ResponseEntity<List<CertificateResponse>> getMyCertificates(
-            Authentication authentication
+            @AuthenticationPrincipal User user
     ) {
-        User user = currentUser(authentication);
-        List<CertificateResponse> certificates = certificateRepository
-                .findByUserOrderByIssuedAtDesc(user)
+        return ResponseEntity.ok(certificateService.getCertificates(user)
                 .stream()
                 .map(CertificateResponse::from)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(certificates);
+                .toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CertificateResponse> getCertificate(
             @PathVariable Long id,
-            Authentication authentication
+            @AuthenticationPrincipal User user
     ) {
-        User user = currentUser(authentication);
-        return certificateRepository.findById(id)
-                .filter(cert -> cert.getUser().getId().equals(user.getId()))
+        return certificateService.getCertificate(id, user)
                 .map(CertificateResponse::from)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
-    private User currentUser(Authentication authentication) {
-        String email = authentication.getName();
-        return userRepository.findByEmail(email).orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Certificate not found"));
     }
 
     public static class CertificateResponse {

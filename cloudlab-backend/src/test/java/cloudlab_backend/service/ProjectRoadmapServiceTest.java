@@ -21,8 +21,10 @@ import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
@@ -85,7 +87,7 @@ class ProjectRoadmapServiceTest{
                 .thenReturn(List.of(paidProject));
         when(userTopicProgressRepository.findByUser_Id(1L))
                 .thenReturn(Collections.emptyList());
-        when(projectRequiredTopicRepository.findByProject_Id(2L))
+        when(projectRequiredTopicRepository.findByProject_IdIn(List.of(2L)))
                 .thenReturn(List.of(
                         new ProjectRequiredTopic(paidProject, networking)
                 ));
@@ -104,7 +106,7 @@ class ProjectRoadmapServiceTest{
                 .thenReturn(List.of(paidProject));
         when(userTopicProgressRepository.findByUser_Id(1L))
                 .thenReturn(List.of(completed));
-        when(projectRequiredTopicRepository.findByProject_Id(2L))
+        when(projectRequiredTopicRepository.findByProject_IdIn(List.of(2L)))
                 .thenReturn(List.of(
                         new ProjectRequiredTopic(paidProject, networking)
                 ));
@@ -142,5 +144,20 @@ class ProjectRoadmapServiceTest{
                 progress.getStatus() == UserProjectProgress.Status.SUBMITTED
         ));
     }
+    @Test
+    void submittingACompletedProjectDoesNotDowngradeIt() {
+        Project freeProject = project(1L, "hello-linux", true);
+        UserProjectProgress completed = new UserProjectProgress();
+        completed.setProject(freeProject);
+        completed.setStatus(UserProjectProgress.Status.COMPLETED);
+        when(projectRepository.findBySlug("hello-linux"))
+                .thenReturn(Optional.of(freeProject));
+        when(userProjectProgressRepository.findByUser_IdAndProject_Id(1L, 1L))
+                .thenReturn(Optional.of(completed));
+        assertThrows(
+                IllegalStateException.class,
+                () -> projectRoadmapService.submitProject("hello-linux", user)
+        );
+        verify(userProjectProgressRepository, never()).save(any());
+    }
 }
-

@@ -4,7 +4,7 @@ import { Award, Check, FileText } from 'lucide-react'
 import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
 import { useAsync } from '../lib/useAsync'
-import { formatDate, summarizeProgress, titleCase } from '../lib/format'
+import { formatDate, safeHref, summarizeProgress, titleCase } from '../lib/format'
 import { gsap, prefersReducedMotion } from '../lib/motion'
 import ProgressRing from '../components/ProgressRing'
 import ProgressBar from '../components/ProgressBar'
@@ -132,7 +132,7 @@ function ProfileView({ user, topics, certificates, subscription, projects }) {
                   <strong>{c.certificateCode}</strong>
                   <div className="cert__date">Issued {formatDate(c.issuedAt)}</div>
                 </div>
-                {c.pdfUrl && <a href={c.pdfUrl} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download</a>}
+                {safeHref(c.pdfUrl) && <a href={safeHref(c.pdfUrl)} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">Download</a>}
               </li>
             ))}
           </ul>

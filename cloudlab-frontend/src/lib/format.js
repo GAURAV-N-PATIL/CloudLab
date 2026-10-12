@@ -41,3 +41,14 @@ export function findNextTopic(topics) {
     null
   )
 }
+
+// Links that come from the API are only rendered when they are http(s), so a bad
+// database row can never become a javascript: link. Returns undefined otherwise.
+export function safeHref(url) {
+  try {
+    const { protocol } = new URL(url)
+    return protocol === 'https:' || protocol === 'http:' ? url : undefined
+  } catch {
+    return undefined
+  }
+}

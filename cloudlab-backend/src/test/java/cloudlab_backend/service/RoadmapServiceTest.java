@@ -28,11 +28,13 @@ class RoadmapServiceTest {
     private TopicResourceRepository topicResourceRepository;
     @Mock
     private UserTopicProgressRepository progressRepository;
+    @Mock
+    private CertificateService certificateService;
     private RoadmapService roadmapService;
     private User user;
     @BeforeEach
     void setUp(){
-        roadmapService=new RoadmapService(topicRepository,topicResourceRepository, progressRepository);
+        roadmapService=new RoadmapService(topicRepository,topicResourceRepository, progressRepository, certificateService);
         user = new User();
         ReflectionTestUtils.setField(user,"id", 1L);
     }

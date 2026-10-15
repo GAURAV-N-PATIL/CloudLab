@@ -20,8 +20,8 @@ export const LIFETIME_FEATURES = [
 ]
 
 export const PRO = {
-  monthly: { id: 'MONTHLY', amount: 499, cadence: 'per month' },
-  yearly: { id: 'YEARLY', amount: 4999, cadence: 'per year', note: 'Two months free' },
+  monthly: { id: 'MONTHLY', amount: 299, cadence: 'per month' },
+  yearly: { id: 'YEARLY', amount: 2999, cadence: 'per year', note: 'Two months free' },
 }
 
 export const LIFETIME = { id: 'LIFETIME', amount: 9999, cadence: 'one time' }
